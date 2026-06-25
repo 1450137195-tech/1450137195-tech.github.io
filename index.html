@@ -1,0 +1,857 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我们的秘密基地</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ========== Reset & Base ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber-50:#fff8ed;
+  --amber-100:#fef3d9;
+  --amber-200:#fde4b3;
+  --amber-300:#fbd38d;
+  --amber-400:#f6b85a;
+  --amber-500:#f09b34;
+  --amber-600:#d97a1e;
+  --amber-700:#b45c16;
+  --rose-50:#fff1f2;
+  --rose-100:#ffe4e6;
+  --rose-200:#fecdd3;
+  --rose-300:#fda4af;
+  --rose-400:#fb7185;
+  --rose-500:#e11d48;
+  --stone-50:#fafaf9;
+  --stone-100:#f5f5f4;
+  --stone-200:#e7e5e4;
+  --stone-300:#d6d3d1;
+  --stone-400:#a8a29e;
+  --stone-500:#78716c;
+  --stone-600:#57534e;
+  --stone-700:#44403c;
+  --stone-800:#292524;
+  --stone-900:#1c1917;
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow:0 4px 24px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.1);
+  --font-main:'Noto Sans SC',-apple-system,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-main);
+  background:var(--stone-50);
+  color:var(--stone-800);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ========== Scrollbar ========== */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--stone-100)}
+::-webkit-scrollbar-thumb{background:var(--amber-300);border-radius:4px}
+
+/* ========== Floating Particles ========== */
+#particles{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  overflow:hidden;
+}
+.particle{
+  position:absolute;
+  width:6px;height:6px;
+  background:var(--amber-300);
+  border-radius:50%;
+  opacity:0;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:.6}
+  90%{opacity:.4}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* ========== Hero ========== */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:2rem;
+  background:linear-gradient(135deg,var(--amber-50) 0%,#fff 40%,var(--rose-50) 100%);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(251,191,36,.08) 0%,transparent 60%),
+              radial-gradient(ellipse at 70% 50%,rgba(251,113,133,.08) 0%,transparent 60%);
+}
+.hero-content{position:relative;z-index:1;max-width:680px}
+.hero-badge{
+  display:inline-block;
+  padding:.3rem 1.2rem;
+  border-radius:999px;
+  background:var(--amber-100);
+  color:var(--amber-700);
+  font-size:.85rem;
+  font-weight:500;
+  letter-spacing:.5px;
+  margin-bottom:1.5rem;
+}
+.hero h1{
+  font-size:clamp(3rem,10vw,5.5rem);
+  font-weight:900;
+  color:var(--stone-900);
+  line-height:1.15;
+  margin-bottom:.75rem;
+  letter-spacing:-1px;
+}
+.hero h1 .accent{
+  background:linear-gradient(135deg,var(--amber-500),var(--rose-400));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero .sub{
+  font-size:clamp(1.1rem,2.5vw,1.4rem);
+  color:var(--stone-500);
+  font-weight:300;
+  margin-bottom:2.5rem;
+  line-height:1.6;
+}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.75rem 2rem;
+  border-radius:999px;
+  font-size:1rem;
+  font-weight:500;
+  border:none;
+  cursor:pointer;
+  transition:all .25s ease;
+  font-family:var(--font-main);
+}
+.btn-primary{
+  background:var(--amber-500);
+  color:#fff;
+  box-shadow:0 4px 16px rgba(240,155,52,.3);
+}
+.btn-primary:hover{
+  background:var(--amber-600);
+  transform:translateY(-2px);
+  box-shadow:0 6px 24px rgba(240,155,52,.4);
+}
+.btn-ghost{
+  background:transparent;
+  color:var(--stone-600);
+  border:2px solid var(--stone-200);
+}
+.btn-ghost:hover{
+  border-color:var(--amber-400);
+  color:var(--amber-600);
+  transform:translateY(-2px);
+}
+.scroll-indicator{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:var(--stone-400);font-size:.8rem;animation:bounce 2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ========== Section Shared ========== */
+section{padding:5rem 1.5rem;position:relative;z-index:1}
+.section-inner{max-width:900px;margin:0 auto}
+.section-label{
+  display:inline-block;
+  padding:.25rem 1rem;
+  border-radius:999px;
+  background:var(--amber-100);
+  color:var(--amber-700);
+  font-size:.8rem;
+  font-weight:500;
+  margin-bottom:1rem;
+  letter-spacing:.5px;
+}
+.section-title{
+  font-size:clamp(1.8rem,4vw,2.5rem);
+  font-weight:700;
+  color:var(--stone-800);
+  margin-bottom:.75rem;
+}
+.section-desc{
+  color:var(--stone-500);
+  font-size:1.05rem;
+  max-width:560px;
+  line-height:1.7;
+}
+
+/* ========== About ========== */
+#about{background:var(--stone-50)}
+.about-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.5rem;
+  margin-top:3rem;
+}
+.about-card{
+  background:#fff;
+  border-radius:var(--radius);
+  padding:2rem;
+  box-shadow:var(--shadow);
+  transition:transform .25s ease,box-shadow .25s ease;
+  text-align:center;
+}
+.about-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.about-card .icon{font-size:2.5rem;margin-bottom:1rem}
+.about-card h3{font-size:1.15rem;font-weight:600;margin-bottom:.5rem;color:var(--stone-800)}
+.about-card p{font-size:.92rem;color:var(--stone-500);line-height:1.6}
+
+/* ========== Guestbook ========== */
+#guestbook{background:linear-gradient(180deg,var(--stone-50),var(--amber-50))}
+.guestbook-form{
+  margin-top:2rem;
+  background:#fff;
+  border-radius:var(--radius);
+  padding:2rem;
+  box-shadow:var(--shadow);
+}
+.guestbook-form textarea{
+  width:100%;
+  min-height:100px;
+  border:2px solid var(--stone-200);
+  border-radius:var(--radius-sm);
+  padding:1rem;
+  font-size:.95rem;
+  font-family:var(--font-main);
+  resize:vertical;
+  transition:border-color .25s;
+  outline:none;
+}
+.guestbook-form textarea:focus{border-color:var(--amber-400)}
+.guestbook-form .form-row{
+  display:flex;gap:1rem;margin-top:1rem;
+  flex-wrap:wrap;align-items:center;
+}
+.guestbook-form input[type="text"]{
+  flex:1;min-width:180px;
+  padding:.7rem 1rem;
+  border:2px solid var(--stone-200);
+  border-radius:var(--radius-sm);
+  font-size:.95rem;
+  font-family:var(--font-main);
+  outline:none;
+  transition:border-color .25s;
+}
+.guestbook-form input[type="text"]:focus{border-color:var(--amber-400)}
+.btn-submit{
+  background:var(--amber-500);color:#fff;
+  border:none;border-radius:999px;
+  padding:.7rem 1.8rem;
+  font-size:.95rem;font-weight:500;
+  cursor:pointer;
+  transition:all .25s;
+  font-family:var(--font-main);
+  white-space:nowrap;
+}
+.btn-submit:hover{background:var(--amber-600);transform:translateY(-2px)}
+.messages{
+  margin-top:2rem;
+  display:flex;flex-direction:column;gap:1rem;
+}
+.message-card{
+  background:#fff;
+  border-radius:var(--radius-sm);
+  padding:1.25rem 1.5rem;
+  box-shadow:var(--shadow);
+  animation:fadeIn .4s ease;
+  border-left:3px solid var(--amber-300);
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.message-card .meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:.5rem;
+}
+.message-card .name{
+  font-weight:600;font-size:.95rem;color:var(--stone-700);
+}
+.message-card .time{
+  font-size:.78rem;color:var(--stone-400);
+}
+.message-card .text{
+  font-size:.92rem;color:var(--stone-600);line-height:1.6;
+}
+.empty-msg{
+  text-align:center;padding:3rem 1rem;
+  color:var(--stone-400);font-size:.95rem;
+}
+
+/* ========== Gallery ========== */
+#gallery{background:var(--stone-50)}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1.25rem;
+  margin-top:2.5rem;
+}
+.gallery-item{
+  position:relative;
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+  aspect-ratio:4/3;
+  background:var(--stone-100);
+  cursor:pointer;
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.gallery-item:hover{transform:scale(1.03);box-shadow:var(--shadow-lg)}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;
+}
+.gallery-item:hover img{transform:scale(1.08)}
+.gallery-item .overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(transparent 50%,rgba(0,0,0,.5));
+  opacity:0;
+  transition:opacity .3s;
+  display:flex;align-items:flex-end;padding:1rem;
+}
+.gallery-item:hover .overlay{opacity:1}
+.gallery-item .caption{
+  color:#fff;font-size:.85rem;font-weight:500;
+}
+.gallery-placeholder{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:.5rem;
+  color:var(--stone-400);
+  font-size:2rem;
+  aspect-ratio:4/3;
+  border:2px dashed var(--stone-200);
+  border-radius:var(--radius-sm);
+  transition:all .25s;
+}
+.gallery-placeholder:hover{
+  border-color:var(--amber-300);
+  color:var(--amber-400);
+  background:var(--amber-50);
+}
+.gallery-placeholder span{font-size:.85rem}
+
+/* ========== Vibes ========== */
+#vibes{
+  background:linear-gradient(135deg,var(--amber-50),var(--rose-50));
+}
+.friend-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1.25rem;
+  margin-top:2.5rem;
+}
+.friend-card{
+  background:#fff;border-radius:var(--radius);
+  padding:1.75rem 1rem;
+  box-shadow:var(--shadow);
+  text-align:center;
+  transition:transform .25s,box-shadow .25s;
+  cursor:pointer;
+}
+.friend-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.friend-card .favatar{font-size:2.8rem;margin-bottom:.6rem}
+.friend-card .fname{font-size:1.1rem;font-weight:600;color:var(--stone-800)}
+.friend-card .fpreview{font-size:.8rem;color:var(--stone-400);margin-top:.3rem}
+
+.fd-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--amber-100)}
+.fd-emoji{font-size:3rem}
+.fd-name{font-size:1.3rem;font-weight:700;color:var(--stone-800)}
+.fd-edit-name{background:none;border:none;color:var(--amber-500);font-size:.8rem;cursor:pointer;padding:0;font-family:var(--font-main);margin-top:.2rem}
+.fd-edit-name:hover{color:var(--amber-600)}
+.fd-items{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.fd-item{display:flex;align-items:center;gap:.85rem;padding:1rem;border-radius:var(--radius-sm);background:var(--stone-50);cursor:pointer;transition:background .2s}
+.fd-item:hover{background:var(--amber-50)}
+.fd-item-emoji{font-size:1.5rem}
+.fd-item-body{flex:1;min-width:0}
+.fd-item-label{font-size:.78rem;color:var(--stone-400);margin-bottom:.15rem}
+.fd-item-value{font-size:.92rem;font-weight:500;color:var(--stone-700);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ========== Footer ========== */
+footer{
+  position:relative;z-index:1;
+  text-align:center;
+  padding:3rem 1.5rem;
+  background:var(--stone-900);
+  color:var(--stone-400);
+  font-size:.88rem;
+}
+footer .footer-heart{color:var(--rose-400);font-size:1.8rem;margin-bottom:.5rem}
+footer p{margin-bottom:.25rem}
+
+/* ========== Modal ========== */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;
+  padding:1.5rem;
+}
+.modal-overlay.active{display:flex}
+.modal{
+  background:#fff;border-radius:var(--radius);
+  max-width:640px;width:100%;
+  max-height:85vh;
+  overflow-y:auto;
+  padding:2rem;
+  position:relative;
+  animation:fadeIn .3s ease;
+}
+.modal-close{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:none;
+  font-size:1.5rem;cursor:pointer;
+  color:var(--stone-400);
+  transition:color .2s;
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+}
+.modal-close:hover{color:var(--stone-700);background:var(--stone-100)}
+.modal img{width:100%;border-radius:var(--radius-sm);margin-bottom:1rem}
+.modal h3{font-size:1.2rem;margin-bottom:.5rem;color:var(--stone-800)}
+.modal p{font-size:.92rem;color:var(--stone-500);line-height:1.6}
+
+/* ========== Responsive ========== */
+@media(max-width:600px){
+  section{padding:3rem 1rem}
+  .hero{padding:1.5rem}
+  .hero h1{font-size:2.5rem}
+  .about-grid,.gallery-grid{grid-template-columns:1fr}
+  .friend-grid{grid-template-columns:1fr 1fr}
+  .guestbook-form{padding:1.25rem}
+  .guestbook-form .form-row{flex-direction:column}
+  .guestbook-form input[type="text"]{width:100%}
+}
+
+/* ========== Toast ========== */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+  background:var(--stone-800);color:#fff;
+  padding:.75rem 1.5rem;border-radius:999px;
+  font-size:.88rem;font-weight:500;
+  opacity:0;transition:opacity .3s;
+  pointer-events:none;z-index:2000;
+}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ===== Particles ===== -->
+<div id="particles"></div>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✦ 专属小窝</div>
+    <h1>
+      我们的<br>
+      <span class="accent">秘密基地</span>
+    </h1>
+    <p class="sub">
+      一个属于我们的小角落。在这里留下你的痕迹，<br>
+      看看大家都在做什么，翻翻共同的回忆。
+    </p>
+    <div class="hero-actions">
+      <a href="#guestbook" class="btn btn-primary">✎ 留言</a>
+      <a href="#gallery" class="btn btn-ghost">◉ 回忆</a>
+      <a href="#vibes" class="btn btn-ghost">♪ 状态</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>往下翻</span>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8l6 6 6-8"/></svg>
+  </div>
+</section>
+
+<!-- ===== About ===== -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">关于这里</div>
+    <h2 class="section-title">为什么要有这个地方</h2>
+    <p class="section-desc">
+      生活太忙，但朋友不该走散。这个小小的网页，是我们之间的秘密基地——<br>
+      不管多久没见，打开它，就像回到了那个熟悉的角落。
+    </p>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="icon">💬</div>
+        <h3>留言板</h3>
+        <p>想说什么就说什么。今天遇到的好事、突然想到的话、或者随便打个招呼。</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">📸</div>
+        <h3>回忆墙</h3>
+        <p>那些一起笑过的瞬间，值得被记住。照片会帮我们记得。</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">🎵</div>
+        <h3>大家都在</h3>
+        <p>看看朋友们最近在听什么、追什么、沉迷什么。距离再远，也能感觉到彼此的存在。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Guestbook ===== -->
+<section id="guestbook">
+  <div class="section-inner">
+    <div class="section-label">留言板</div>
+    <h2 class="section-title">留下你的痕迹</h2>
+    <p class="section-desc">随便写点什么吧。一句问候、一个段子、一个只有我们懂的梗。</p>
+    <div class="guestbook-form">
+      <textarea id="msgInput" placeholder="想说的话…"></textarea>
+      <div class="form-row">
+        <input type="text" id="nameInput" placeholder="你的名字（或昵称）" maxlength="20">
+        <button class="btn-submit" id="postBtn">发布留言</button>
+      </div>
+    </div>
+    <div class="messages" id="messages">
+      <div class="empty-msg">还没有留言，来做第一个吧 ✨</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Gallery ===== -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="section-label">回忆墙</div>
+    <h2 class="section-title">那些闪光的瞬间</h2>
+    <p class="section-desc">点击照片可以放大查看。你也可以上传新的照片。</p>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ===== Friends ===== -->
+<section id="vibes">
+  <div class="section-inner">
+    <div class="section-label">朋友们</div>
+    <h2 class="section-title">大家最近在…</h2>
+    <p class="section-desc">点开朋友的头像，看看他们最近在忙什么、迷什么。</p>
+    <div class="friend-grid" id="friendGrid"></div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="footer-heart">💛</div>
+  <p>这里是我们的秘密基地，永远为你敞开。</p>
+  <p style="margin-top:.75rem;font-size:.8rem">朋友就是自己选的家人</p>
+  <p style="margin-top:.75rem;font-size:.8rem">✦ 2026 · 属于我们的小角落 ✦</p>
+</footer>
+
+<!-- ===== Modal ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalCloseBtn">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<!-- ===== Friend Detail Modal ===== -->
+<div class="modal-overlay" id="friendOverlay">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" id="friendCloseBtn">&times;</button>
+    <div id="friendDetailContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="vibeOverlay">
+  <div class="modal" style="max-width:480px">
+    <button class="modal-close" id="vibeCloseBtn">&times;</button>
+    <h3 id="vibeLabel" style="font-size:1.1rem;margin-bottom:1rem;color:var(--stone-700)"></h3>
+    <input type="text" id="vibeInput" placeholder="输入答案…" style="width:100%;padding:.75rem 1rem;border:2px solid var(--stone-200);border-radius:var(--radius-sm);font-size:1rem;font-family:var(--font-main);outline:none;box-sizing:border-box">
+    <input type="text" style="border:none;height:0;opacity:0;position:absolute" tabindex="-1">
+    <div style="display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.25rem">
+      <button class="btn-ghost" id="vibeCancelBtn" style="padding:.6rem 1.5rem;border-radius:999px;background:none;border:2px solid var(--stone-200);color:var(--stone-600);cursor:pointer;font-family:var(--font-main);font-size:.9rem">取消</button>
+      <button class="btn-submit" id="vibeSaveBtn" style="padding:.6rem 1.5rem">保存</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== Particles ====================
+(function initParticles(){
+  var c=document.getElementById('particles');
+  for(var i=0;i<30;i++){
+    var p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*12)+'s';
+    p.style.animationDelay=Math.random()*15+'s';
+    p.style.width=p.style.height=(3+Math.random()*5)+'px';
+    c.appendChild(p);
+  }
+})();
+
+// ==================== Toast ====================
+var toastTimer;
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+// ==================== Gallery (Event Delegation) ====================
+var defaultMemories=[
+  {src:'',caption:'放一张我们的合照 📸',placeholder:true},
+  {src:'',caption:'那次一起出去玩 🎉',placeholder:true},
+  {src:'',caption:'某个搞笑瞬间 🤣',placeholder:true},
+  {src:'',caption:'一起看的日落 🌅',placeholder:true},
+  {src:'',caption:'干杯 🥂',placeholder:true},
+  {src:'',caption:'等你们来填满 ❤️',placeholder:true}
+];
+
+function renderGallery(){
+  var g=document.getElementById('galleryGrid');
+  var memories;
+  try{memories=JSON.parse(localStorage.getItem('friends_gallery'))||defaultMemories}
+  catch(e){memories=defaultMemories}
+  g.innerHTML='';
+  memories.forEach(function(m,i){
+    var div=document.createElement('div');
+    div.className='gallery-item';
+    if(m.placeholder||!m.src){
+      div.innerHTML='<div class="gallery-placeholder"><span>+</span><span>'+m.caption+'</span></div>';
+    }else{
+      div.innerHTML='<img src="'+m.src+'" alt="'+m.caption+'" loading="lazy"><div class="overlay"><span class="caption">'+m.caption+'</span></div>';
+    }
+    g.appendChild(div);
+  });
+}
+
+// Gallery click delegation
+document.getElementById('galleryGrid').addEventListener('click',function(e){
+  var item=e.target.closest('.gallery-item');
+  if(!item)return;
+  var g=document.getElementById('galleryGrid');
+  var idx=Array.prototype.indexOf.call(g.children,item);
+  var memories;
+  try{memories=JSON.parse(localStorage.getItem('friends_gallery'))||defaultMemories}
+  catch(e){memories=defaultMemories}
+  var m=memories[idx];
+  if(!m||m.placeholder||!m.src){
+    openAddPhoto(idx);
+  }else{
+    openModal(m.src,m.caption);
+  }
+});
+
+function openAddPhoto(index){
+  var input=document.createElement('input');
+  input.type='file';
+  input.accept='image/*';
+  input.onchange=function(e){
+    var file=e.target.files[0];
+    if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var memories;
+      try{memories=JSON.parse(localStorage.getItem('friends_gallery'))||defaultMemories}
+      catch(e){memories=defaultMemories}
+      memories[index]={src:ev.target.result,caption:'一张新照片 🎉',placeholder:false};
+      localStorage.setItem('friends_gallery',JSON.stringify(memories));
+      renderGallery();
+      showToast('照片已添加 ✨');
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function openModal(src,caption){
+  document.getElementById('modalOverlay').classList.add('active');
+  document.getElementById('modalContent').innerHTML='<img src="'+src+'" alt="'+caption+'"><h3>'+caption+'</h3>';
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow='';
+}
+
+// Modal click delegation
+document.getElementById('modalOverlay').addEventListener('click',function(e){
+  if(e.target===this||e.target.id==='modalCloseBtn')closeModal();
+});
+
+// ==================== Guestbook ====================
+function getMessages(){
+  try{return JSON.parse(localStorage.getItem('friends_messages'))||[]}
+  catch(e){return []}
+}
+function saveMessages(msgs){
+  localStorage.setItem('friends_messages',JSON.stringify(msgs));
+}
+function renderMessages(){
+  var container=document.getElementById('messages');
+  var msgs=getMessages();
+  if(msgs.length===0){
+    container.innerHTML='<div class="empty-msg">还没有留言，来做第一个吧 ✨</div>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<msgs.length;i++){
+    var m=msgs[i];
+    html+='<div class="message-card"><div class="meta"><span class="name">'+escHtml(m.name||'匿名朋友')+'</span><span class="time">'+m.time+'</span></div><div class="text">'+escHtml(m.text)+'</div></div>';
+  }
+  container.innerHTML=html;
+}
+function postMessage(){
+  var text=document.getElementById('msgInput').value.trim();
+  var name=document.getElementById('nameInput').value.trim()||'匿名朋友';
+  if(!text){showToast('写点什么再发吧 ☺️');return;}
+  var msgs=getMessages();
+  var d=new Date();
+  var timeStr=d.toLocaleDateString('zh-CN',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+  msgs.unshift({name:name,text:text,time:timeStr});
+  saveMessages(msgs);
+  renderMessages();
+  document.getElementById('msgInput').value='';
+  showToast('留言已发布 ✨');
+}
+function escHtml(s){
+  var d=document.createElement('div');
+  d.textContent=s;
+  return d.innerHTML;
+}
+
+// Guestbook submit button click
+document.getElementById('postBtn').addEventListener('click',postMessage);
+
+// ==================== Friends ====================
+var defaultFriends=[
+  {name:"",emoji:"🦊",items:[{emoji:"🎵",label:"在听",value:""},{emoji:"📺",label:"在追",value:""},{emoji:"🎮",label:"在玩",value:""},{emoji:"💭",label:"在想",value:""}]},
+  {name:"",emoji:"🐱",items:[{emoji:"🎵",label:"在听",value:""},{emoji:"📺",label:"在追",value:""},{emoji:"🎮",label:"在玩",value:""},{emoji:"💭",label:"在想",value:""}]},
+  {name:"",emoji:"🐶",items:[{emoji:"🎵",label:"在听",value:""},{emoji:"📺",label:"在追",value:""},{emoji:"🎮",label:"在玩",value:""},{emoji:"💭",label:"在想",value:""}]},
+  {name:"",emoji:"🐰",items:[{emoji:"🎵",label:"在听",value:""},{emoji:"📺",label:"在追",value:""},{emoji:"🎮",label:"在玩",value:""},{emoji:"💭",label:"在想",value:""}]},
+  {name:"",emoji:"🐼",items:[{emoji:"🎵",label:"在听",value:""},{emoji:"📺",label:"在追",value:""},{emoji:"🎮",label:"在玩",value:""},{emoji:"💭",label:"在想",value:""}]}
+];
+
+function cloneFriends(arr){return arr.map(function(f){return{name:f.name,emoji:f.emoji,items:f.items.map(function(it){return{emoji:it.emoji,label:it.label,value:it.value};})};});}
+
+function getFriends(){try{var d=JSON.parse(localStorage.getItem("friends_data"));if(d&&d.length===5)return d;return cloneFriends(defaultFriends);}catch(e){return cloneFriends(defaultFriends);}}
+
+function saveFriends(d){localStorage.setItem("friends_data",JSON.stringify(d));}
+
+function renderFriends(){
+  var g=document.getElementById("friendGrid");
+  var friends=getFriends();
+  var html="";
+  for(var i=0;i<friends.length;i++){
+    var f=friends[i];
+    var filled=f.items.filter(function(it){return it.value;}).length;
+    var preview=filled>0?filled+"项已更新":"点击查看近况";
+    html+="<div class=\"friend-card\" data-fi=\""+i+"\"><div class=\"favatar\">"+f.emoji+"</div><div class=\"fname\">"+(f.name||"朋友"+(i+1))+"</div><div class=\"fpreview\">"+preview+"</div></div>";
+  }
+  g.innerHTML=html;
+}
+
+// Friend card click - open detail
+document.getElementById("friendGrid").addEventListener("click",function(e){
+  var card=e.target.closest(".friend-card");
+  if(!card)return;
+  var fi=parseInt(card.getAttribute("data-fi"),10);
+  openFriendDetail(fi);
+});
+
+function openFriendDetail(index){
+  var friends=getFriends();
+  var f=friends[index];
+  var overlay=document.getElementById("friendOverlay");
+  var content=document.getElementById("friendDetailContent");
+  var fname=f.name||"朋友"+(index+1);
+  var html="<div class=\"fd-header\"><span class=\"fd-emoji\">"+f.emoji+"</span><div class=\"fd-name\">"+fname+"</div></div>";
+  html+="<div class=\"fd-items\">";
+  for(var i=0;i<f.items.length;i++){
+    var it=f.items[i];
+    html+="<div class=\"fd-item\" data-fi=\""+index+"\" data-ii=\""+i+"\"><span class=\"fd-item-emoji\">"+it.emoji+"</span><div class=\"fd-item-body\"><div class=\"fd-item-label\">"+it.label+"</div><div class=\"fd-item-value\">"+(it.value||"点击填写")+"</div></div></div>";
+  }
+  html+="</div>";
+  content.innerHTML=html;
+  overlay.classList.add("active");
+  document.body.style.overflow="hidden";
+}
+
+// Close friend overlay
+document.getElementById("friendOverlay").addEventListener("click",function(e){
+  if(e.target===this||e.target.id==="friendCloseBtn"){
+    this.classList.remove("active");
+    document.body.style.overflow="";
+  }
+});
+
+// Item click in friend detail - open vibe edit
+document.getElementById("friendDetailContent").addEventListener("click",function(e){
+  var item=e.target.closest(".fd-item");
+  if(!item)return;
+  var fi=parseInt(item.getAttribute("data-fi"),10);
+  var ii=parseInt(item.getAttribute("data-ii"),10);
+  var friends=getFriends();
+  var f=friends[fi];
+  var it=f.items[ii];
+  var fname=f.name||"朋友"+(fi+1);
+  document.getElementById("vibeLabel").textContent=f.emoji+" "+fname+" · "+it.label;
+  document.getElementById("vibeInput").value=it.value||"";
+  document.getElementById("vibeInput").dataset.fi=fi;
+  document.getElementById("vibeInput").dataset.ii=ii;
+  document.getElementById("vibeOverlay").classList.add("active");
+  setTimeout(function(){document.getElementById("vibeInput").focus();document.getElementById("vibeInput").select();},100);
+});
+
+// Update vibeSaveBtn to use new data structure
+document.getElementById("vibeSaveBtn").addEventListener("click",function(){
+  var inp=document.getElementById("vibeInput");
+  var fi=parseInt(inp.dataset.fi,10);
+  var ii=parseInt(inp.dataset.ii,10);
+  var val=inp.value.trim();
+  var friends=getFriends();
+  if(!val){friends[fi].items[ii].value="";}else{friends[fi].items[ii].value=val;}
+  saveFriends(friends);
+  renderFriends();
+  document.getElementById("vibeOverlay").classList.remove("active");
+  showToast("更新成功 ✨");
+});
+// ==================== Vibe Modal logic ===
+// Close vibe modal on overlay click
+if(document.getElementById('vibeOverlay')){
+  document.getElementById('vibeOverlay').addEventListener('click',function(e){
+    if(e.target===this||e.target.id==='vibeCloseBtn')this.classList.remove('active');
+  });
+}
+// Enter to save, Escape to cancel
+if(document.getElementById('vibeInput')){
+  document.getElementById('vibeInput').addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();document.getElementById('vibeSaveBtn').click();}
+    if(e.key==='Escape'){document.getElementById('vibeOverlay').classList.remove('active');}
+  });
+}
+
+// ==================== Init ====================
+renderMessages();
+renderGallery();
+
+
+// ==================== Keyboard ====================
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){var o=document.getElementById('modalOverlay');if(o.classList.contains('active'))closeModal();}
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter')postMessage();
+});
+</script>
+</body>
+</html>
