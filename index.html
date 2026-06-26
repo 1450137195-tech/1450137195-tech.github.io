@@ -692,8 +692,12 @@ var defaultMemories=[
 function renderGallery(){
   var g=document.getElementById('galleryGrid');
   var memories;
-  try{memories=JSON.parse(localStorage.getItem('friends_gallery'))||defaultMemories}
-  catch(e){memories=defaultMemories}
+  try{
+  let storageData = localStorage.getItem('friends_gallery');
+  memories = storageData ? JSON.parse(storageData) : defaultMemories;
+}catch(e){
+  memories=defaultMemories
+}
   g.innerHTML='';
   memories.forEach(function(m,i){
     var div=document.createElement('div');
